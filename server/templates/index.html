@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Simple Web App</title>
+    </head>
+    <body>
+        <button id="button1" onclick="buttonClicked('Button1')">Button 1</button>
+        <button id="button2" onclick="buttonClicked('Button2')">Button 2</button>
+
+        <script>
+            function buttonClicked(button) {
+                fetch('/button_clicked', {
+                    method: 'POST',
+                    body: JSON.stringify({ button: button }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => console.log(button + ' was clicked!'));
+            }
+        </script>
+    </body>
+    </html>
