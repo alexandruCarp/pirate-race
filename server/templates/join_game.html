@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Game</title>
+    <style>
+        body {
+            font-family: Cambria, sans-serif;
+            text-align: center;
+            background-color: #86BDEB; 
+            color: #FF3333; 
+        }
+        h1 {
+            margin-top: 50px;
+        }
+        .input-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .digit-box {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 24px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            margin: 0 5px;
+            text-align: center;
+            color: #fff;
+            background-color: transparent;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        input[type="submit"]:hover {
+            background-color: #004080;
+        }
+        input[type="submit"].enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>JOIN GAME</h1>
+    <div class="input-container">
+        <input type="text" class="digit-box" maxlength="1" required>
+        <input type="text" class="digit-box" maxlength="1" required>
+        <input type="text" class="digit-box" maxlength="1" required>
+        <input type="text" class="digit-box" maxlength="1" required>
+        <input type="text" class="digit-box" maxlength="1" required>
+        <input type="text" class="digit-box" maxlength="1" required>
+    </div>
+    <div class="input-container">
+        <form action="#" id="joinForm">
+            <input type="submit" value="Join" id="joinButton">
+        </form>
+    </div>
+    <img src="{{ url_for('static', filename='pirate.png') }}" alt="Pirate" width="260">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const digitInputs = document.querySelectorAll('.digit-box');
+            const joinButton = document.getElementById('joinButton');
+            const joinForm = document.getElementById('joinForm');
+
+            digitInputs.forEach(function(input) {
+                input.addEventListener('input', function() {
+                    const allFilled = Array.from(digitInputs).every(input => input.value.trim() !== '');
+                    if (allFilled) {
+                        joinButton.classList.add('enabled');
+                        joinButton.removeAttribute('disabled');
+                    } else {
+                        joinButton.classList.remove('enabled');
+                        joinButton.setAttribute('disabled', true);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
