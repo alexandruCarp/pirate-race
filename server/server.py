@@ -10,6 +10,10 @@ socketio = SocketIO(app)
 def index():
     return render_template('index.html')
 
+@app.route('/join_game')
+def join_game():
+    return render_template('join_game.html')
+
 @app.route('/button_clicked', methods=['POST'])
 def button_clicked():
     data = request.json
