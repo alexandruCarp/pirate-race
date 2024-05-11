@@ -12,9 +12,9 @@ players_connected = 0
 join_code = ""
 
 
-# @app.route('/')
-# def index():
-#     return render_template('index.html')
+@app.route('/index')
+def index():
+    return render_template('index.html')
 
 @socketio.on('join_code')
 def handle_join_code(data):
