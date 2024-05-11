@@ -21,6 +21,11 @@ public class CodePage : MonoBehaviour
     void Update()
     {
         connected_players = SocketIOManager.getConnectedPlayers().ToString();
-        text_player_count.text = connected_players + "/" + total_players + " players connected";   
+        text_player_count.text = connected_players + "/" + total_players + " players connected";
+
+        if (connected_players == total_players)
+        {
+            text_code.text = "All players connected! Choose your boats!";
+        }
     }
 }

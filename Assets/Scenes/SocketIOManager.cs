@@ -3,6 +3,8 @@ using SocketIOClient;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Text;   
+using System.Net; 
 using SocketIOClient.Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -28,7 +30,9 @@ public class SocketIOManager : MonoBehaviour
     static void init()
     {
         connected_players = 0;
-    	var uri = new Uri("http://192.168.1.111:5000");
+        string hostName = Dns.GetHostName(); 
+        string IP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+    	var uri = new Uri("http://" + IP + ":5000");
         client = new SocketIOUnity(uri);
         client.JsonSerializer = new NewtonsoftJsonSerializer();
         
