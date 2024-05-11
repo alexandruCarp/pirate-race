@@ -60,6 +60,10 @@ def handle_code_submission():
 def choose_boat():
     return render_template('choose_boat.html')
 
+@app.route('/boat_control')
+def boat_control():
+    return render_template('boat_control.html')
+
 
 if __name__ == '__main__':
     socketio.run(app, host=socket.gethostbyname(socket.gethostname()), port=5000)
