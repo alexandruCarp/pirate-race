@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pirate Boat Race Game</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #282c34; 
+  }
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px; 
+    padding: 20px; 
+    background-color: transparent; 
+    border-radius: 10px; 
+  }
+  .left-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .left-buttons button {
+    width: 100px; 
+    height: 100px; 
+    font-size: 50px; 
+    background-color: #3498db;
+    color: #fff;
+    border: none; 
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  .right-button {
+    width: 140px; 
+    height: 140px; 
+    font-size: 40px; 
+    background-color: #3498db;
+    color: #fff;
+    border: none; 
+    border-radius: 50%;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="controls">
+  <div class="left-buttons">
+    <button id="upButton">&#708;</button>
+    <button id="downButton">&#709;</button>
+  </div>
+  <button id="fireButton" class="right-button">&#128163;</button>
+</div>
+
+<script>
+  const upButton = document.getElementById('upButton');
+  const downButton = document.getElementById('downButton');
+  const fireButton = document.getElementById('fireButton');
+
+  upButton.addEventListener('click', () => {
+    console.log('Up button clicked');
+  });
+
+  downButton.addEventListener('click', () => {
+    console.log('Down button clicked');
+  });
+
+  fireButton.addEventListener('click', () => {
+    console.log('Fire button clicked');
+  });
+</script>
+</body>
+</html>
