@@ -86,6 +86,26 @@
                     }
                 });
             });
+            // when the form is submitted post to /code_submitted (to be processed by the server)
+            joinForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const code = Array.from(digitInputs).map(input => input.value).join('');
+                fetch('/code_submitted', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.valid) {
+                        window.location.href = '/choose_boat';
+                    } else {
+                        alert(data.message)
+                    }
+                });
+            });
         });
     </script>
 </body>

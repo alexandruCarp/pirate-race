@@ -11,6 +11,8 @@ public class RandomDigits : MonoBehaviour
         int randomNumber = Random.Range(100000, 1000000);
         // Set the text of the TextMeshPro component
         tmpText.text = randomNumber.ToString();
+        SocketIOManager.emit("join_code", tmpText.text);
+        Debug.Log("TRIED TO EMIT JOIN CODE");
     }
 }
 

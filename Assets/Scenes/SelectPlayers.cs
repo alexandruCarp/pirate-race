@@ -24,7 +24,6 @@ public class SelectPlayers : MonoBehaviour
         {
             num++;
             numJucatori.text = num.ToString();
-            Debug.Log("Hello world!");
         }
     }
 
@@ -40,7 +39,10 @@ public class SelectPlayers : MonoBehaviour
 
     public void NextScene()
     {
+        Debug.Log("Hello world!");
         NumarJucatori.NumJucatori = num.ToString();
+        SocketIOManager.emit("players_number", num.ToString());
+        Debug.Log("TRIED TO EMIT PLAYERS NUMBER");
         SceneManager.LoadScene("CodePage");
     }
 }
