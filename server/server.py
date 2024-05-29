@@ -14,6 +14,13 @@ join_code = ""
 players_id = 0
 race_in_progress = False
 
+# player_id:[name, boat_id]
+player_boat_dict = {0:["buna", 0], 1:["ola", 1], 2:["hei", 2]}
+# player_id:ranking
+players_ranking = {0:2, 1:0, 2:1}
+# player_boat_dict = {}
+# players_ranking = {}
+
 @app.route('/index')
 def index():
     return render_template('index.html')
@@ -62,9 +69,12 @@ def handle_code_submission():
 def handle_player_ready():
     global players_ready
     global race_in_progress
+    global player_boat_dict
     players_ready += 1
     name = request.json['name']
     boat_id = request.json['boatId']
+    player_id = request.cookies.get('player_id')
+    player_boat_dict[player_id] = [name, boat_id]
     print(name + ' is ready with boat ' + str(boat_id))
 
     if players_ready == players_number:
@@ -99,7 +109,11 @@ def control_button_pressed():
     print('player ' + player_id + ' pressed ' + button_type)
     return {'ok': True}
 
+@app.route('/end_game')
+def end_game():
+    return render_template('end_game.html', Players=player_boat_dict, Ranking=sorted(players_ranking.items(), key=lambda item: item[1]))
 
 if __name__ == '__main__':
     socketio.run(app, host=socket.gethostbyname(socket.gethostname()), port=5000)
+
 
