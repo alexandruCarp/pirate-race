@@ -3,19 +3,55 @@ using SocketIOClient;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Text;   
+using System.Text;
 using System.Net; 
 using SocketIOClient.Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 public class SocketIOManager : MonoBehaviour
 {
     private static SocketIOUnity client = null;
     static int connected_players = 0;
 
+    static bool all_ready = false;
+
+    public enum ControlEventTypes
+    {
+        BUTTON_UP,
+        BUTTON_DOWN,
+        BUTTON_FIRE
+    }
+    public struct ControlEvent
+    {
+        public int player_id;
+        public ControlEventTypes type;
+    }
+
+    private class ButtonPressedData
+    {
+        public int player_id;
+        public string button;
+    }
+
+    static Queue<ControlEvent> control_events = new Queue<ControlEvent>();
+    public static bool event_available()
+    {
+        return control_events.Count > 0;
+    }
+    public static ControlEvent get_event()
+    {
+        return control_events.Dequeue();
+    }
+
     public static int getConnectedPlayers()
     {
         return connected_players;
+    }
+
+    public static bool areAllReady()
+    {
+        return all_ready;
     }
 
     public static void emit(string target,string data)
@@ -45,6 +81,38 @@ public class SocketIOManager : MonoBehaviour
         {
             Debug.Log("New player connected!");
             connected_players++;
+        });
+
+        client.On("all_ready", (data) =>
+        {
+            Debug.Log("All players are ready!");
+            all_ready = true;
+        });
+
+        client.On("button_pressed", (data) =>
+        {
+            Debug.Log("Button pressed!");
+
+            string parsed_data = data.ToString().Substring(1, data.ToString().Length - 2);
+            Debug.Log(parsed_data);
+
+            ButtonPressedData buttonPressedData = JsonConvert.DeserializeObject<ButtonPressedData>(parsed_data);
+
+            ControlEvent controlEvent = new ControlEvent();
+            controlEvent.player_id = buttonPressedData.player_id;
+            if (buttonPressedData.button == "up")
+            {
+                controlEvent.type = ControlEventTypes.BUTTON_UP;
+            }
+            else if (buttonPressedData.button == "down")
+            {
+                controlEvent.type = ControlEventTypes.BUTTON_DOWN;
+            }
+            else if (buttonPressedData.button == "fire")
+            {
+                controlEvent.type = ControlEventTypes.BUTTON_FIRE;
+            }
+            control_events.Enqueue(controlEvent);
         });
 
         client.Connect();

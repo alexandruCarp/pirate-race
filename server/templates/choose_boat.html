@@ -66,7 +66,23 @@
         if (!nume) {
             alert("Te rog completează numele înainte de a apăsa butonul 'Ready'.");
         } else {
-            window.location.href = '/index';
+            fetch('/player_ready', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: nume, boatId: indexPoza })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/boat_control';
+                } else {
+                    alert('Error: ' + response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
     }
 </script>

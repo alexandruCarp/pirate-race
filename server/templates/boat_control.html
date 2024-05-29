@@ -66,14 +66,35 @@
 
   upButton.addEventListener('click', () => {
     console.log('Up button clicked');
+    fetch('/control_button_pressed', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ button: 'up' })
+    });
   });
 
   downButton.addEventListener('click', () => {
     console.log('Down button clicked');
+    fetch('/control_button_pressed', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ button: 'down' })
+    });
   });
 
   fireButton.addEventListener('click', () => {
     console.log('Fire button clicked');
+    fetch('/control_button_pressed', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ button: 'fire' })
+    });
   });
 </script>
 </body>

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class CodePage : MonoBehaviour
 {
@@ -26,6 +27,11 @@ public class CodePage : MonoBehaviour
         if (connected_players == total_players)
         {
             text_code.text = "All players connected! Choose your boats!";
+        }
+
+        if (SocketIOManager.areAllReady())
+        {
+            SceneManager.LoadScene("Race_Scene");
         }
     }
 }

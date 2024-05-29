@@ -1,6 +1,5 @@
-# app.py
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 from flask_socketio import SocketIO, emit
 import socket
 
@@ -9,8 +8,11 @@ socketio = SocketIO(app)
 
 players_number = -1
 players_connected = 0
+players_ready = 0
 join_code = ""
 
+players_id = 0
+race_in_progress = False
 
 @app.route('/index')
 def index():
@@ -55,29 +57,49 @@ def handle_code_submission():
         else:
             print('too many players')
             return {'valid': False, 'message': 'too many players'}
+        
+@app.route('/player_ready', methods=['POST'])
+def handle_player_ready():
+    global players_ready
+    global race_in_progress
+    players_ready += 1
+    name = request.json['name']
+    boat_id = request.json['boatId']
+    print(name + ' is ready with boat ' + str(boat_id))
+
+    if players_ready == players_number:
+        socketio.emit('all_ready', "")
+        race_in_progress = True
+
+    return {'ok': True}
     
 @app.route('/choose_boat')
 def choose_boat():
-    return render_template('choose_boat.html')
+    player_id = request.cookies.get('player_id')
+    resp = make_response(render_template('choose_boat.html'))
+    if not player_id:
+        global players_id
+        player_id = players_id
+        players_id += 1
+        resp.set_cookie('player_id', str(player_id))
+    return resp
 
 @app.route('/boat_control')
 def boat_control():
     return render_template('boat_control.html')
 
+@app.route('/control_button_pressed', methods=['POST'])
+def control_button_pressed():
+    global race_in_progress
+    button_type = request.json['button']
+    player_id = request.cookies.get('player_id')
+
+    if race_in_progress:
+        socketio.emit('button_pressed', {'player_id': player_id, 'button': button_type})
+    print('player ' + player_id + ' pressed ' + button_type)
+    return {'ok': True}
+
 
 if __name__ == '__main__':
     socketio.run(app, host=socket.gethostbyname(socket.gethostname()), port=5000)
 
-
-# TODO
-
-# Prima pagina in unity, in care se alege nr de jucatori, cand se apasa new game se face socketio.emit catre server (cu nr
-# de jucatori si codul) -> DONE
-# Urmatoarea pagina in unity va afisa cati jucatori s au conectat (asteapta sa primeasca socketio.emit de la server 
-# ca sa modifice numarul) -> DONE
-
-# Serverul afiseaza pagina initiala in care se introduce codul ca pagina de start (in '/') -> DONE
-
-# Cand se apasa submit, serverul verifica codul si numarul de jucatori deja conectati. Daca e ok, redirectioneaza spre pagina
-# de alegere barca etc (momentan doar o pagina cu un text care zice ca s a conectat cu succes), altfel afiseaza un text de eroare
-# pe pagina de start -> DONE
