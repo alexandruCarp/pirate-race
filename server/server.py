@@ -15,11 +15,11 @@ players_id = 0
 race_in_progress = False
 
 # player_id:[name, boat_id]
-player_boat_dict = {0:["buna", 0], 1:["ola", 1], 2:["hei", 2]}
+# player_boat_dict = {0:["buna", 0], 1:["ola", 1], 2:["hei", 2]}
 # player_id:ranking
-players_ranking = {0:2, 1:0, 2:1}
-# player_boat_dict = {}
-# players_ranking = {}
+# players_ranking = {0:2, 1:0, 2:1}
+player_boat_dict = {}
+players_ranking = {}
 
 @app.route('/index')
 def index():
