@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>End Game</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #86BDEB;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 3em;
+        }
+        .image-container img {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: red;"> GAME OVER </h1>
+    <div class="image-container" id="image-container">
+        <img src="{{ url_for('static', filename='crown.png') }}" width="80" height="50">
+    </div>
+
+    <script>
+        var players = JSON.parse('{{Players | tojson}}');
+        var ranking = JSON.parse('{{Ranking | tojson}}');
+
+        var poze = [
+            "{{ url_for('static', filename='barca1.png') }}",
+            "{{ url_for('static', filename='barca2.png') }}",
+            "{{ url_for('static', filename='barca3.png') }}"
+        ];
+
+        var container = document.getElementById("image-container");
+        var initialWidth = 90 / Object.keys(ranking).length;
+
+        for (var i = 0; i < Object.keys(ranking).length; i++) {
+            var boatContainer = document.createElement('div');
+            boatContainer.className = 'boat-container';
+
+            var img = document.createElement('img');
+            img.src = poze[players[ranking[i][0]][1]];
+            img.style.width = initialWidth - (i * 2) + '%';
+            boatContainer.appendChild(img);
+
+            var playerName = players[ranking[i][0]][0];
+            var nameParagraph = document.createElement('strong');
+            nameParagraph.textContent = playerName;
+            boatContainer.appendChild(nameParagraph);
+
+            container.appendChild(boatContainer);
+        }
+    </script>
+</body>
+</html>
