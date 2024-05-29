@@ -16,6 +16,8 @@ public class SocketIOManager : MonoBehaviour
 
     static bool all_ready = false;
 
+    private static int[] player_boat_ids = new int[5];
+
     public enum ControlEventTypes
     {
         BUTTON_UP,
@@ -33,6 +35,11 @@ public class SocketIOManager : MonoBehaviour
         public int player_id;
         public string button;
     }
+    private class NewReadyData
+    {
+        public int player_id;
+        public int boat_id;
+    }
 
     static Queue<ControlEvent> control_events = new Queue<ControlEvent>();
     public static bool event_available()
@@ -46,7 +53,8 @@ public class SocketIOManager : MonoBehaviour
 
     public static int getConnectedPlayers()
     {
-        return connected_players;
+        // return connected_players;
+        return 3;
     }
 
     public static bool areAllReady()
@@ -54,6 +62,11 @@ public class SocketIOManager : MonoBehaviour
         return all_ready;
     }
 
+    public static int getPlayerBoatId(int player_id)
+    {
+        // return player_boat_ids[player_id];
+        return player_id % 2;
+    }
     public static void emit(string target,string data)
     {
         if (client == null) {
@@ -113,6 +126,14 @@ public class SocketIOManager : MonoBehaviour
                 controlEvent.type = ControlEventTypes.BUTTON_FIRE;
             }
             control_events.Enqueue(controlEvent);
+        });
+        client.On("new_ready", (data) =>
+        {
+            Debug.Log("New player is ready!");
+            string parsed_data = data.ToString().Substring(1, data.ToString().Length - 2);
+            
+            NewReadyData newReadyData = JsonConvert.DeserializeObject<NewReadyData>(parsed_data);
+            player_boat_ids[newReadyData.player_id] = newReadyData.boat_id;
         });
 
         client.Connect();
