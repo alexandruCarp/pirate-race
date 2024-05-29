@@ -10,9 +10,17 @@ public class NewBehaviourScript : MonoBehaviour
 
     public GameObject boatPrefab; // Prefab for the boat
 
-    public GameObject[] boats; // Array of boats
+    public static GameObject[] boats; // Array of boats
 
     float spacing; // Spacing between lanes
+
+    public GameObject obstaclePrefab;
+    float obstacleSpawnInterval = 2.0f; 
+    float nextObstacleSpawnTime;
+    public static List<GameObject>  obstacles = new List<GameObject>();
+    public float obstacleSpeed = 5f;
+    float obstacleHeight;
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +66,9 @@ public class NewBehaviourScript : MonoBehaviour
             boats[i].transform.position = new Vector3(-screenWidth * 1 / 4, yPos, -1);
         }
 
+        nextObstacleSpawnTime = Time.time + obstacleSpawnInterval;
+        obstacleHeight = obstaclePrefab.GetComponent<Renderer>().bounds.size.y;
+
     }
 
     // Update is called once per frame
@@ -70,15 +81,55 @@ public class NewBehaviourScript : MonoBehaviour
             switch (controlEvent.type)
             {
                 case SocketIOManager.ControlEventTypes.BUTTON_UP:
-                    boats[controlEvent.player_id].transform.position += new Vector3(0, spacing / 3, 0);
+                    boats[controlEvent.player_id].transform.position += new Vector3(0, obstacleHeight, 0);
                     break;
                 case SocketIOManager.ControlEventTypes.BUTTON_DOWN:
-                    boats[controlEvent.player_id].transform.position += new Vector3(0, -spacing / 3, 0);
+                    boats[controlEvent.player_id].transform.position += new Vector3(0, -obstacleHeight, 0);
                     break;
                 case SocketIOManager.ControlEventTypes.BUTTON_FIRE:
                     // Fire logic
                     break;
             }
         }
+
+
+        for (int i = 0; i < obstacles.Count; i++)
+        {
+            obstacles[i].transform.position += new Vector3(-obstacleSpeed * Time.deltaTime, 0, 0);
+        }
+
+        if (Time.time >= nextObstacleSpawnTime)
+        {
+            SpawnObstacle();
+            nextObstacleSpawnTime = Time.time + obstacleSpawnInterval;
+        }
     }
+
+    void SpawnObstacle()
+    {
+        // Get the screen width
+        float screenHeight = 2f * mainCamera.orthographicSize;
+        float screenWidth = screenHeight * mainCamera.aspect;
+
+        // Randomly select a lane
+        int randomLane = Random.Range(0, lanes_number);
+        Vector3 boatPosition = boats[randomLane].transform.position;
+        float xOffset = obstaclePrefab.transform.localScale.x; // Adjust this value as needed
+        float xPos = Random.Range(boatPosition.x + 5f, screenWidth - 10f);
+
+        // Calculate the y position for the obstacle
+        float yPos = boatPosition.y;
+
+        // Create the obstacle
+        GameObject obstacle = Instantiate(obstaclePrefab);
+
+        // Set the obstacle's parent to this GameObject for better organization
+        obstacle.transform.SetParent(transform);
+
+        // Position the obstacle
+        obstacle.transform.position = new Vector3(xPos, yPos, -1);
+
+        obstacles.Add(obstacle);
+    }
+
 }

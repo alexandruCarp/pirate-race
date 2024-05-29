@@ -159,6 +159,7 @@ MonoBehaviour:
   mainCamera: {fileID: 366491409}
   boatPrefab: {fileID: 2112568201324645884, guid: 6981096d198c28e49bb7448729bf1fbb, type: 3}
   boats: []
+  obstaclePrefab: {fileID: 1870963765825436170, guid: d598e487601159543abad91ec5726f45, type: 3}
 --- !u!114 &90499956
 MonoBehaviour:
   m_ObjectHideFlags: 0
