@@ -7,6 +7,8 @@ public class TreasureCollide : MonoBehaviour
     public bool collided = false;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        collided = true;
+        if (collision.gameObject.tag == "Boat") {
+            collided = true;
+        }
     }
 }

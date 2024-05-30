@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - comoara
+  - Boat
+  - Barrel
+  - BOMB
   layers:
   - Default
   - TransparentFX

@@ -17,7 +17,7 @@ race_in_progress = False
 # player_id:[name, boat_id]
 # player_boat_dict = {0:["buna", 0], 1:["ola", 1], 2:["hei", 2]}
 # player_id:ranking
-players_ranking = {0:2, 1:0, 2:1}
+# players_ranking = {0:2, 1:0, 2:1}
 player_boat_dict = {}
 players_ranking = {}
 
@@ -36,6 +36,16 @@ def handle_players_number(data):
     global players_number
     print('received players number: ' + str(data))
     players_number = int(data)
+
+@socketio.on('player_lost')
+def handle_player_lost(data):
+    global race_in_progress
+    global players_connected
+    print('player ' + str(data) + ' lost')
+    players_ranking[data] = players_connected
+    players_connected -= 1
+    if players_connected == 0:
+        race_in_progress = False
 
 @app.route('/')
 def join_game():
@@ -76,7 +86,7 @@ def handle_player_ready():
     player_id = request.cookies.get('player_id')
     player_boat_dict[player_id] = [name, boat_id]
     print(name + ' is ready with boat ' + str(boat_id))
-
+    socketio.emit('new_ready', {'boat_id': boat_id, 'player_id': player_id})
     if players_ready == players_number:
         socketio.emit('all_ready', "")
         race_in_progress = True
@@ -85,13 +95,10 @@ def handle_player_ready():
     
 @app.route('/choose_boat')
 def choose_boat():
-    player_id = request.cookies.get('player_id')
+    global players_id
     resp = make_response(render_template('choose_boat.html'))
-    if not player_id:
-        global players_id
-        player_id = players_id
-        players_id += 1
-        resp.set_cookie('player_id', str(player_id))
+    resp.set_cookie('player_id', str(players_id))
+    players_id += 1
     return resp
 
 @app.route('/boat_control')
@@ -107,7 +114,11 @@ def control_button_pressed():
     if race_in_progress:
         socketio.emit('button_pressed', {'player_id': player_id, 'button': button_type})
     print('player ' + player_id + ' pressed ' + button_type)
-    return {'ok': True}
+    if race_in_progress:
+        return {'ok': True}
+    else:
+        print("race not in progress")
+        return {'ok': False}
 
 @app.route('/end_game')
 def end_game():

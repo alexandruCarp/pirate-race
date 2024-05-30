@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoatCollision : MonoBehaviour
+public class BombCollider : MonoBehaviour
 {
-    public bool collected_treasure = false;
-    public bool should_slow_down = false;
-    private void OnTriggerEnter2D(Collider2D collision)
+    public bool collided = false;
+private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "comoara")
-        {
-            collected_treasure = true;
-        }
-
         if (collision.gameObject.tag == "Barrel")
         {
             
@@ -23,7 +17,7 @@ public class BoatCollision : MonoBehaviour
             {
                 obstacles.Remove(collision.gameObject);
             }
-            should_slow_down = true;
+            collided = true;
         }
     }
 }

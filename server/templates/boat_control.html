@@ -72,7 +72,12 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ button: 'up' })
-    });
+    }).then(response => response.json())
+      .then(data => {
+          if (!data.ok) {
+              window.location.href = '/end_game';
+          }
+      });
   });
 
   downButton.addEventListener('click', () => {
@@ -83,7 +88,12 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ button: 'down' })
-    });
+    }).then(response => response.json())
+      .then(data => {
+          if (!data.ok) {
+              window.location.href = '/end_game';
+          }
+      });
   });
 
   fireButton.addEventListener('click', () => {
@@ -94,7 +104,12 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ button: 'fire' })
-    });
+    }).then(response => response.json())
+      .then(data => {
+          if (!data.ok) {
+              window.location.href = '/end_game';
+          }
+      });
   });
 </script>
 </body>

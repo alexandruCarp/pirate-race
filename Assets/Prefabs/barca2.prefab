@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3267369264583749542}
   m_Layer: 0
   m_Name: barca2
-  m_TagString: Untagged
+  m_TagString: Boat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e808307eca93941b793f432fc4759ecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collected_treasure: 0
 --- !u!61 &4101804283079169388
 BoxCollider2D:
   m_ObjectHideFlags: 0

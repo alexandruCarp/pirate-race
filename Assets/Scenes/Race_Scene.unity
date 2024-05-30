@@ -143,23 +143,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &90499955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 90499954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b38bae7f01be7630089e818b181c3ad8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  linePrefab: {fileID: 1710537232802161972, guid: a571f1a90a79db8c28c2220fc32d048e, type: 3}
-  mainCamera: {fileID: 366491409}
-  boatPrefab: {fileID: 2112568201324645884, guid: 6981096d198c28e49bb7448729bf1fbb, type: 3}
-  boats: []
-  obstaclePrefab: {fileID: 1870963765825436170, guid: d598e487601159543abad91ec5726f45, type: 3}
 --- !u!114 &90499956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,11 +240,14 @@ MonoBehaviour:
   linePrefab: {fileID: 1710537232802161972, guid: a571f1a90a79db8c28c2220fc32d048e, type: 3}
   treasurePrefab: {fileID: 3109991566364988577, guid: 3cf6b9b18dbca37c68a33b15d1af05cf, type: 3}
   cannonPrefab: {fileID: 1697359771705207632, guid: 0e9002c99462b0a8fa533ec4c74bcdf3, type: 3}
+  bombPrefab: {fileID: 5025830095561778306, guid: 37ab8efd99ad74966a9f068625db2756, type: 3}
   mainCamera: {fileID: 366491409}
   boat0Prefab: {fileID: 6797989649040482694, guid: a7c0057d1b913b9a59f4404c2cde4ff6, type: 3}
   boat1Prefab: {fileID: 5414588655112686748, guid: fec2a25d1826d26daac894fc9df05719, type: 3}
   boat2Prefab: {fileID: 1600301685833209476, guid: 18135525c109b2065b01ee70311199c2, type: 3}
   boats: []
+  obstaclePrefab: {fileID: 1870963765825436170, guid: d598e487601159543abad91ec5726f45, type: 3}
+  obstacleSpeed: 5
 --- !u!1 &366491407
 GameObject:
   m_ObjectHideFlags: 0

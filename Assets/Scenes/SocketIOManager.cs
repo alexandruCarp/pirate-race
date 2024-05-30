@@ -53,8 +53,7 @@ public class SocketIOManager : MonoBehaviour
 
     public static int getConnectedPlayers()
     {
-        // return connected_players;
-        return 3;
+        return connected_players;
     }
 
     public static bool areAllReady()
@@ -64,8 +63,7 @@ public class SocketIOManager : MonoBehaviour
 
     public static int getPlayerBoatId(int player_id)
     {
-        // return player_boat_ids[player_id];
-        return player_id % 2;
+        return player_boat_ids[player_id];
     }
     public static void emit(string target,string data)
     {
@@ -134,6 +132,7 @@ public class SocketIOManager : MonoBehaviour
             
             NewReadyData newReadyData = JsonConvert.DeserializeObject<NewReadyData>(parsed_data);
             player_boat_ids[newReadyData.player_id] = newReadyData.boat_id;
+            print("Player " + newReadyData.player_id + " is ready with boat " + newReadyData.boat_id);
         });
 
         client.Connect();
